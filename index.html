@@ -3,42 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ти перемогла!</title>
+    <title>Хто кохає більше?</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Raleway:wght@300&display=swap" rel="stylesheet">
     <style>
         body {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background: linear-gradient(45deg, #ff9a9e, #fad0c4, #ffdde1);
-            background-size: 400% 400%;
-            animation: gradientBG 10s ease infinite;
-            font-family: Arial, sans-serif;
-            text-align: center;
+            font-family: 'Pacifico', cursive;
+            background: linear-gradient(120deg, #ff9a9e, #fad0c4);
+            overflow: hidden;
+            position: relative;
         }
-
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
         h1 {
             font-size: 48px;
-            font-weight: bold;
-            background: linear-gradient(90deg, #ff0080, #ff8c00, #ff0080);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: glow 1.5s infinite alternate;
+            color: white;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
         }
-
-        @keyframes glow {
-            0% { text-shadow: 0px 0px 10px rgba(255, 0, 128, 0.6); }
-            100% { text-shadow: 0px 0px 20px rgba(255, 140, 0, 0.8); }
+        .buttons {
+            display: flex;
+            gap: 50px;
+            position: relative;
+        }
+        .btn {
+            width: 120px;
+            height: 120px;
+            font-size: 28px;
+            border: none;
+            border-radius: 50%;
+            background: white;
+            cursor: pointer;
+            position: relative;
+            font-family: 'Raleway', sans-serif;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: 0.3s ease-in-out;
+        }
+        .btn:hover {
+            background: #ffd1dc;
+            transform: scale(1.1);
+        }
+        .hidden {
+            display: none;
         }
     </style>
 </head>
 <body>
-    <h1>Тільки сьогодні, тільки зараз, ти перемогла в цьому спорі!</h1>
+
+    <h1 id="title">Хто кохає більше?</h1>
+    <div class="buttons">
+        <button class="btn" id="me">Я</button>
+        <button class="btn" id="him">Він</button>
+    </div>
+
+    <script>
+        let meButton = document.getElementById("me");
+        let himButton = document.getElementById("him");
+        let title = document.getElementById("title");
+        let clickCount = 0;
+
+        meButton.addEventListener("click", function() {
+            if (clickCount < 3) {
+                let newSize = 120 * (0.75 ** (clickCount + 1)); 
+                meButton.style.width = newSize + "px";
+                meButton.style.height = newSize + "px";
+                meButton.style.fontSize = (newSize / 3) + "px";
+                clickCount++;
+            } else {
+                meButton.classList.add("hidden");
+                himButton.classList.add("hidden");
+                title.innerHTML = "Ти перемогла!<br>(але тільки сьогодні)";
+            }
+        });
+
+        himButton.addEventListener("click", function() {
+            let velocity = 0;
+            let gravity = 0.5; 
+            let position = 0;
+            let falling = setInterval(function() {
+                velocity += gravity;
+                position += velocity;
+                himButton.style.transform = `translateY(${position}px)`;
+                if (position >= window.innerHeight - himButton.offsetHeight - 20) {
+                    clearInterval(falling);
+                }
+            }, 20);
+        });
+    </script>
+
 </body>
 </html>
